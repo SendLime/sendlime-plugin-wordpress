@@ -1,0 +1,20 @@
+{
+    "name": "sendlime/sendlime",
+    "description": "SendLime lets you notify your customers about their WooCommerce order updates via SMS",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "SendLime",
+            "email": "support@sendlime.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "SendLime\\SendLime\\": "includes/"
+        },
+        "files": ["includes/functions.php"]
+    }
+}
