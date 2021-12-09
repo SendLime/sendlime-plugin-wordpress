@@ -34,11 +34,11 @@ class WCOrderNotification {
 		$to = sendlime_process_phone_number( $order_details->get_billing_phone() );
 
 		$body = array(
-			'api_key'       => $settings['api_key'],
-			'api_secret'    => $settings['api_secret'],
-			'from'          => $settings['from'],
-			'to'            => $to,
-			'text'          => $text
+			'api_key'       => esc_attr( sanitize_text_field( $settings['api_key'] ) ),
+			'api_secret'    => esc_attr( sanitize_text_field( $settings['api_secret'] ) ),
+			'from'          => esc_attr( sanitize_text_field( $settings['from'] ) ),
+			'to'            => esc_attr( sanitize_text_field( $to ) ),
+			'text'          => esc_textarea( sanitize_textarea_field( $text ) ),
 		);
 
 		sendlime_send_sms($body);
@@ -74,7 +74,34 @@ class WCOrderNotification {
 			$_POST['enabled'] = true;
 		}
 
-		sendlime_wc_update_order_notification_settings($_POST);
+		$data = array();
+
+		foreach ( $_POST as $key => $value ) {
+			switch ( $key ) {
+				case 'status':
+					$status = array();
+
+					foreach ($_POST[ 'status' ] as $status_key => $status_value) {
+						$status[ $status_key ] = sanitize_text_field( $status_value );
+					}
+
+					$data[ $key ] = $status;
+					break;
+
+				case 'enabled':
+				case 'from':
+				case 'api_key':
+				case 'api_secret':
+					$data[ $key ] = sanitize_text_field( $value );
+					break;
+
+				default:
+					$data[ $key ] = sanitize_textarea_field( $value );
+					break;
+			}
+		}
+
+		sendlime_wc_update_order_notification_settings($data);
 
 		$redirect_to = admin_url( 'admin.php?page=sendlime&saved=true' );
 		wp_redirect( $redirect_to );
@@ -92,7 +119,7 @@ class WCOrderNotification {
 				$checked = ' checked';
 			}
 
-			echo '<p><input type="checkbox" name="status[]" value="' . $status . '"' . $checked . ' />' . $value . '</p>';
+			echo '<p><input type="checkbox" name="status[]" value="' . esc_attr( $status ) . '"' . $checked . ' />' . esc_attr( $value ) . '</p>';
 		}
 	}
 
@@ -101,7 +128,7 @@ class WCOrderNotification {
 		$settings = get_option( SENDLIME_WC_ORDER_NOTIFICATION_SETTINGS_KEY );
 
 		foreach ($statuses as $status => $value) {
-			echo '<tr><th scope="row"><label for="' . $status . '">' . $value . ' message</label></th><td><textarea class="regular-text" rows="7" name="' . $status .'" id="' . $status . '">' . $settings[$status] . '</textarea></td></tr>';
+			echo '<tr><th scope="row"><label for="' . esc_attr( $status ) . '">' . esc_attr( $value ) . ' message</label></th><td><textarea class="regular-text" rows="7" name="' . esc_attr( $status ) .'" id="' . esc_attr( $status ) . '">' . esc_textarea( $settings[$status] ) . '</textarea></td></tr>';
 		}
 	}
 }

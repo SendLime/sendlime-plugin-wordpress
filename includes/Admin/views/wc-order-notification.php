@@ -18,7 +18,7 @@
                         <label for="enabled"><?php _e( 'Enable', 'sendlime' ); ?></label>
                     </th>
                     <td>
-                        <input type="checkbox" name="enabled" id="enabled" <?php echo $check_enable ?>>
+                        <input type="checkbox" name="enabled" id="enabled" <?php echo esc_attr( $check_enable ) ?>>
                     </td>
                 </tr>
                 <tr>
@@ -26,7 +26,7 @@
                         <label for="from"><?php _e( 'From', 'sendlime' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="from" id="from" class="regular-text" value="<?php echo $settings['from'] ?>">
+                        <input type="text" name="from" id="from" class="regular-text" value="<?php echo esc_attr( $settings['from'] ) ?>">
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@
                         <label for="api_key"><?php _e( 'API Key', 'sendlime' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="api_key" id="api_key" class="regular-text" value="<?php echo $settings['api_key'] ?>">
+                        <input type="text" name="api_key" id="api_key" class="regular-text" value="<?php echo esc_attr( $settings['api_key'] ) ?>">
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@
                         <label for="api_secret"><?php _e( 'API Secret', 'sendlime' ); ?></label>
                     </th>
                     <td>
-                        <input type="password" name="api_secret" id="api_secret" class="regular-text" value="<?php echo $settings['api_secret'] ?>">
+                        <input type="password" name="api_secret" id="api_secret" class="regular-text" value="<?php echo esc_attr( $settings['api_secret'] ) ?>">
                     </td>
                 </tr>
                 <tr>
