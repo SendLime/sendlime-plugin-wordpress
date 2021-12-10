@@ -27,10 +27,12 @@ class Installer {
 
 		if ( ! $settings ) {
 			$defaultSettings = array(
-				'enabled'                   => false,
-				'from'                      => '',
-				'api_key'                   => '',
-				'api_secret'                => '',
+				'enabled'                           => false,
+				'from'                              => '',
+				'api_key'                           => '',
+				'api_secret'                        => '',
+				'new_order_notification_enabled'    => false,
+				'debug_enabled'                     => false,
 				'status'           => array(
 					'wc-pending',
 					'wc-processing',
