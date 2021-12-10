@@ -20,7 +20,7 @@ class Menu {
      * @return void
      */
     public function admin_menu() {
-        add_submenu_page( 'woocommerce', __( 'SendLime', 'sendlime' ), __( 'SMS Notification', 'sendlime' ), 'manage_woocommerce', 'sendlime', [ $this, 'order_notification' ] );
+        add_submenu_page( 'woocommerce', __( 'SendLime', 'sendlime' ), __( 'SendLime Notifications', 'sendlime' ), 'manage_woocommerce', 'sendlime', [ $this, 'order_notification' ] );
     }
 
     /**
