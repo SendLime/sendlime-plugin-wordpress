@@ -105,6 +105,7 @@ function sendlime() {
 }
 
 add_action( 'woocommerce_order_status_changed', [ $wc_order_notification_controller, 'wc_order_status_change_handler' ] );
+add_action( 'woocommerce_new_order', [ $wc_order_notification_controller, 'send_new_order_notification' ] );
 
 function sendlime_settings_link( $links ) {
 	$settings_link = array(

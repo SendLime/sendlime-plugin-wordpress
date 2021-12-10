@@ -32,6 +32,8 @@ class Installer {
 				'api_key'                           => '',
 				'api_secret'                        => '',
 				'new_order_notification_enabled'    => false,
+				'new_order_notification_message'    => 'Hi! A new order #{order_number} has been placed. Total: {order_amount} {order_currency}',
+				'new_order_notification_phone'      => '',
 				'debug_enabled'                     => false,
 				'status'           => array(
 					'wc-pending',

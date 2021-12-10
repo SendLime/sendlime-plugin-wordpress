@@ -15,6 +15,31 @@ class WCOrderNotification {
 		}
 	}
 
+	public function send_new_order_notification( $order_id ) {
+		$settings = get_option( SENDLIME_WC_ORDER_NOTIFICATION_SETTINGS_KEY );
+
+		if ( ! $settings['api_key'] || ! $settings['api_secret'] || ! $settings['enabled'] ) return;
+
+		if ( !$settings[ 'new_order_notification_enabled' ] || !$settings[ 'new_order_notification_phone' ] || !$settings[ 'new_order_notification_message' ] ) return;
+
+		$order_details = wc_get_order( $order_id );
+
+		$api_key    = esc_sanitize( $settings['api_key'] );
+		$api_secret = esc_sanitize( $settings['api_secret'] );
+		$text       = esc_sanitize( sendlime_process_order_message( $settings[ 'new_order_notification_message' ], $order_details ) );
+		$to         = esc_sanitize( sendlime_process_phone_number( $settings[ 'new_order_notification_phone' ] ) );
+		$from       = esc_sanitize( $settings['from'] );
+
+		sendlime_send_sms(array(
+			'api_key'       => $api_key,
+			'api_secret'    => $api_secret,
+			'from'          => $from,
+			'to'            => $to,
+			'text'          => $text,
+		));
+	}
+
+
 	public function wc_order_status_change_handler( $order_id ) {
 		$settings = get_option( SENDLIME_WC_ORDER_NOTIFICATION_SETTINGS_KEY );
 
@@ -25,21 +50,23 @@ class WCOrderNotification {
 		if ( ! $order_details->get_billing_phone() ) return;
 
 		$enabled_statuses = $settings['status'];
+
+		if ( !$enabled_statuses ) return;
+
 		$current_status = 'wc-' . $order_details->get_status();
 
 		if ( ! in_array( $current_status, $enabled_statuses ) ) return;
 		if ( ! $settings[$current_status] ) return;
 
-		$text = sendlime_process_order_message( $settings[$current_status], $order_details );
-		$to = sendlime_process_phone_number( $order_details->get_billing_phone() );
-
-		$from = esc_attr( sanitize_text_field( $settings['from'] ) );
-		$to = esc_attr( sanitize_text_field( $to ) );
-		$text = esc_textarea( sanitize_textarea_field( $text ) );
+		$api_key    = esc_sanitize( $settings['api_key'] );
+		$api_secret = esc_sanitize( $settings['api_secret'] );
+		$text       = esc_sanitize( sendlime_process_order_message( $settings[$current_status], $order_details ) );
+		$to         = esc_sanitize( sendlime_process_phone_number( $order_details->get_billing_phone() ) );
+		$from       = esc_sanitize( $settings['from'] );
 
 		$body = array(
-			'api_key'       => esc_attr( sanitize_text_field( $settings['api_key'] ) ),
-			'api_secret'    => esc_attr( sanitize_text_field( $settings['api_secret'] ) ),
+			'api_key'       => $api_key,
+			'api_secret'    => $api_secret,
 			'from'          => $from,
 			'to'            => $to,
 			'text'          => $text,
@@ -47,6 +74,7 @@ class WCOrderNotification {
 
 		$response = sendlime_send_sms($body);
 
+		// send debug if enabled
 		if ( $settings[ 'debug_enabled' ] && $settings[ 'debug_email' ] ) {
 			sendlime_send_debug_mail( $response, $settings[ 'debug_email' ], $order_id, $from, $to, $text );
 		}
@@ -126,7 +154,7 @@ class WCOrderNotification {
 	public function wc_statuses() {
 		$statuses = wc_get_order_statuses();
 		$settings = get_option( SENDLIME_WC_ORDER_NOTIFICATION_SETTINGS_KEY );
-		$selected_statuses = $settings['status'];
+		$selected_statuses = $settings[ 'status' ] ?: array();
 
 		foreach ($statuses as $status => $value) {
 			$checked = '';

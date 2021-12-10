@@ -40,7 +40,7 @@ function sendlime_send_debug_mail( $response, $email, $order_id, $from, $to, $te
 		$message .= '<br />Message: ' . $text;
 		$message .= '<br /><br />API response from the SendLime server:';
 		$message .= '<br /><pre>' . json_encode( json_decode(  $response[ 'body' ] ), JSON_PRETTY_PRINT ) . '</pre>';
-		$message .= '<br /><p>Regards,<br />- The SendLime Team</p>';
+		$message .= '<br /><p>Regards,<br />The SendLime Team</p>';
 		$headers = array('Content-Type: text/html; charset=UTF-8');
 
 		wp_mail( $email, $subject, $message, $headers );
@@ -123,4 +123,17 @@ function sendlime_process_order_message( $message, $order_details ) {
 	}
 
 	return $message;
+}
+
+/**
+ * Santizes and escapes
+ *
+ * @param $string
+ * @param $type
+ *
+ * @return string|void
+ */
+function esc_sanitize( $string, $type = 'text' ) {
+	if ( $type == 'text' ) return esc_attr( sanitize_text_field( $string ) );
+	return esc_textarea( sanitize_textarea_field( $string ) );
 }

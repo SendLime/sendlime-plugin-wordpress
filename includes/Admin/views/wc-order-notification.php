@@ -90,12 +90,20 @@
                         <input type="checkbox" name="new_order_notification_enabled" id="new_order_notification_enabled" <?php echo esc_attr( $check_new_order_notification ) ?>>
                     </td>
                 </tr>
-                <tr id="new_order_notification" class="sendlime-hidden">
+                <tr id="new_order_notification--phone" class="sendlime-hidden">
                     <th scope="row">
-                        <label for="admin_phone"><?php _e( 'Receiver phone number', 'sendlime' ); ?></label>
+                        <label for="new_order_notification_phone"><?php _e( 'Receiver phone number', 'sendlime' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" name="admin_phone" id="admin_phone" class="regular-text" value="<?php echo esc_attr( $settings['admin_phone'] ) ?>">
+                        <input type="text" name="new_order_notification_phone" id="new_order_notification_phone" class="regular-text" value="<?php echo esc_attr( $settings['new_order_notification_phone'] ) ?>">
+                    </td>
+                </tr>
+                <tr id="new_order_notification--message" class="sendlime-hidden">
+                    <th scope="row">
+                        <label for="new_order_notification_message"><?php _e( 'Message', 'sendlime' ); ?></label>
+                    </th>
+                    <td>
+                        <textarea rows="5" type="text" name="new_order_notification_message" id="new_order_notification_message" class="regular-text"><?php echo esc_attr( $settings['new_order_notification_message'] ) ?></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -159,6 +167,7 @@
         }
 
         handleCheckboxHideShow('debug_enabled', 'debug');
-        handleCheckboxHideShow('new_order_notification_enabled', 'new_order_notification');
+        handleCheckboxHideShow('new_order_notification_enabled', 'new_order_notification--phone');
+        handleCheckboxHideShow('new_order_notification_enabled', 'new_order_notification--message');
     });
 </script>
