@@ -5,7 +5,7 @@ function sendlime_wc_update_order_notification_settings( $args = [] ) {
 }
 
 function sendlime_send_sms( $args = [] ) {
-	wp_remote_post("https://brain.sendlime.com/sms", array(
+	return wp_remote_post("https://brain.sendlime.com/sms", array(
 		'method'      => 'POST',
 		'body'        => array(
 			'api_key'       => $args['api_key'],
@@ -15,6 +15,36 @@ function sendlime_send_sms( $args = [] ) {
 			'from'          => $args['from'],
 		),
 	));
+}
+
+/***
+ * Sends debug email of send sms API response
+ *
+ * @param $response array|WP_Error
+ * @param $email string
+ *
+ * @return void
+ */
+function sendlime_send_debug_mail( $response, $email, $order_id, $from, $to, $text ) {
+	$subject = 'WC SendLime SMS Debug for #' . $order_id;
+
+	if ( is_wp_error( $response ) ) {
+		wp_mail( $email, $subject, 'Error: Something went wrong on the SendLime server or WP.' );
+	} else {
+		$message = '<b>DEBUG REPORT</b>';
+		$message .= '<br /><br />Order ID: #' . $order_id;
+		if ( $from ) {
+			$message .= '<br />From: ' . $from;
+		}
+		$message .= '<br />To: ' . $to;
+		$message .= '<br />Message: ' . $text;
+		$message .= '<br /><br />API response from the SendLime server:';
+		$message .= '<br /><pre>' . json_encode( json_decode(  $response[ 'body' ] ), JSON_PRETTY_PRINT ) . '</pre>';
+		$message .= '<br /><p>Regards,<br />- The SendLime Team</p>';
+		$headers = array('Content-Type: text/html; charset=UTF-8');
+
+		wp_mail( $email, $subject, $message, $headers );
+	}
 }
 
 /**

@@ -33,15 +33,23 @@ class WCOrderNotification {
 		$text = sendlime_process_order_message( $settings[$current_status], $order_details );
 		$to = sendlime_process_phone_number( $order_details->get_billing_phone() );
 
+		$from = esc_attr( sanitize_text_field( $settings['from'] ) );
+		$to = esc_attr( sanitize_text_field( $to ) );
+		$text = esc_textarea( sanitize_textarea_field( $text ) );
+
 		$body = array(
 			'api_key'       => esc_attr( sanitize_text_field( $settings['api_key'] ) ),
 			'api_secret'    => esc_attr( sanitize_text_field( $settings['api_secret'] ) ),
-			'from'          => esc_attr( sanitize_text_field( $settings['from'] ) ),
-			'to'            => esc_attr( sanitize_text_field( $to ) ),
-			'text'          => esc_textarea( sanitize_textarea_field( $text ) ),
+			'from'          => $from,
+			'to'            => $to,
+			'text'          => $text,
 		);
 
-		sendlime_send_sms($body);
+		$response = sendlime_send_sms($body);
+
+		if ( $settings[ 'debug_enabled' ] && $settings[ 'debug_email' ] ) {
+			sendlime_send_debug_mail( $response, $settings[ 'debug_email' ], $order_id, $from, $to, $text );
+		}
 	}
 
 	/**
@@ -88,15 +96,18 @@ class WCOrderNotification {
 					$data[ $key ] = $status;
 					break;
 
-				case 'enabled':
 				case 'from':
 				case 'api_key':
 				case 'api_secret':
-				case 'new_order_notification_enabled':
 				case 'admin_phone':
-				case 'debug_enabled':
 				case 'debug_email':
 					$data[ $key ] = sanitize_text_field( $value );
+					break;
+
+				case 'enabled':
+				case 'new_order_notification_enabled':
+				case 'debug_enabled':
+					$data[ $key ] = $value == 'on' || $value == true;
 					break;
 
 				default:
