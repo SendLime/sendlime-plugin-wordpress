@@ -5,7 +5,32 @@
     $check_enable = '';
     $enabled = $settings['enabled'];
     if ( $enabled ) $check_enable = ' checked';
+
+    $check_new_order_notification = '';
+    $new_order_notification_enabled = $settings[ 'new_order_notification_enabled' ];
+    if (  $new_order_notification_enabled) $check_new_order_notification = ' checked';
+
+    $check_debug = '';
+    $debug_enabled = $settings[ 'debug_enabled' ];
+    if ( $debug_enabled ) $check_debug = ' checked';
 ?>
+
+<style>
+    .sendlime-section {
+        padding: 50px 0 10px !important;
+        margin-top: 19px;
+    }
+
+    .sendlime-section h2 {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 500;
+    }
+
+    .sendlime-hidden {
+        display: none;
+    }
+</style>
 
 <div class="wrap">
 	<h1><?php _e( 'SendLime SMS Notification', 'sendlime' ); ?></h1>
@@ -19,6 +44,12 @@
                     </th>
                     <td>
                         <input type="checkbox" name="enabled" id="enabled" <?php echo esc_attr( $check_enable ) ?>>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="sendlime-section">
+                        <h2>Credentials</h2>
                     </td>
                 </tr>
                 <tr>
@@ -45,6 +76,50 @@
                         <input type="password" name="api_secret" id="api_secret" class="regular-text" value="<?php echo esc_attr( $settings['api_secret'] ) ?>">
                     </td>
                 </tr>
+
+                <tr>
+                    <td class="sendlime-section">
+                        <h2>Settings</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="new_order_notification_enabled"><?php _e( 'Receive new order notification', 'sendlime' ); ?></label>
+                    </th>
+                    <td>
+                        <input type="checkbox" name="new_order_notification_enabled" id="new_order_notification_enabled" <?php echo esc_attr( $check_new_order_notification ) ?>>
+                    </td>
+                </tr>
+                <tr id="new_order_notification" class="sendlime-hidden">
+                    <th scope="row">
+                        <label for="admin_phone"><?php _e( 'Receiver phone number', 'sendlime' ); ?></label>
+                    </th>
+                    <td>
+                        <input type="text" name="admin_phone" id="admin_phone" class="regular-text" value="<?php echo esc_attr( $settings['admin_phone'] ) ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="debug_enabled"><?php _e( 'Receive debug information', 'sendlime' ); ?></label>
+                    </th>
+                    <td>
+                        <input type="checkbox" name="debug_enabled" id="debug_enabled" <?php echo esc_attr( $check_debug ) ?>>
+                    </td>
+                </tr>
+                <tr id="debug" class="sendlime-hidden">
+                    <th scope="row">
+                        <label for="debug_email"><?php _e( 'Email address', 'sendlime' ); ?></label>
+                    </th>
+                    <td>
+                        <input type="email" name="debug_email" id="debug_email" class="regular-text" value="<?php echo esc_attr( $settings['debug_email'] ) ?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="sendlime-section">
+                        <h2>Order statuses</h2>
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row">
                         <label for="apiSecret"><?php _e( 'Select status', 'sendlime' ); ?></label>
@@ -61,3 +136,29 @@
         <?php submit_button( __( 'Save Changes', 'sendlime' ), 'primary', 'wc_order_notification_settings' ); ?>
     </form>
 </div>
+
+<script>
+    jQuery(document).ready(function($) {
+        function hideOrShow(checkboxId, targetFieldId) {
+            const checkbox = $(`#${checkboxId}`);
+            const targetField = $(`#${targetFieldId}`);
+
+            if(checkbox.is(':checked')) {
+                targetField.show();
+            } else {
+                targetField.hide();
+            }
+        }
+
+        function handleCheckboxHideShow(checkboxId, targetFieldId) {
+            const checkbox = $(`#${checkboxId}`);
+            hideOrShow(checkboxId, targetFieldId);
+            checkbox.on('change', function () {
+                hideOrShow(checkboxId, targetFieldId)
+            });
+        }
+
+        handleCheckboxHideShow('debug_enabled', 'debug');
+        handleCheckboxHideShow('new_order_notification_enabled', 'new_order_notification');
+    });
+</script>

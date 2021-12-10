@@ -92,6 +92,10 @@ class WCOrderNotification {
 				case 'from':
 				case 'api_key':
 				case 'api_secret':
+				case 'new_order_notification_enabled':
+				case 'admin_phone':
+				case 'debug_enabled':
+				case 'debug_email':
 					$data[ $key ] = sanitize_text_field( $value );
 					break;
 
