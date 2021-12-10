@@ -4,7 +4,7 @@ Tags: woocommerce, sms, order notify, update
 Requires at least: 3.5
 Tested up to: 5.8
 Requires PHP: 7.1
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,10 @@ In the search field type "SendLime" and click Search Plugins. You can install it
 3. Activate the plugin from the Plugins menu within the WordPress admin.
 
 == Changelog ==
+
+= 1.1.0 =
+* Add - Option to get new order notification via SMS
+* Add - Option to receive SMS debug report via email
 
 = 1.0.0 =
 * Initial release
