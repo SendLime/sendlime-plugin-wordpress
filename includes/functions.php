@@ -8,11 +8,13 @@ function sendlime_send_sms( $args = [] ) {
 	return wp_remote_post("https://brain.sendlime.com/sms", array(
 		'method'      => 'POST',
 		'body'        => array(
-			'api_key'       => $args['api_key'],
-			'api_secret'    => $args['api_secret'],
 			'to'            => $args['to'],
 			'text'          => $args['text'],
 			'from'          => $args['from'],
+		),
+		'headers'			=> array(
+			'Content-Type'  => 'application/json',
+			'Authorization' => 'Basic ' . base64_encode( $args['api_key'] . ':' . $args['api_secret'] ),
 		),
 	));
 }
