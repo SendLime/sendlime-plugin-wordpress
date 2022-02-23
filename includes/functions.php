@@ -13,7 +13,6 @@ function sendlime_send_sms( $args = [] ) {
 			'from'          => $args['from'],
 		),
 		'headers'			=> array(
-			'Content-Type'  => 'application/json',
 			'Authorization' => 'Basic ' . base64_encode( $args['api_key'] . ':' . $args['api_secret'] ),
 		),
 	));
