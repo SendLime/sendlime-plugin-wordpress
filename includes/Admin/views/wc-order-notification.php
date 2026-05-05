@@ -54,10 +54,11 @@
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="from"><?php _e( 'From', 'sendlime' ); ?></label>
+                        <label for="from"><?php _e( 'Sender / Brand ID', 'sendlime' ); ?></label>
                     </th>
                     <td>
                         <input type="text" name="from" id="from" class="regular-text" value="<?php echo esc_attr( $settings['from'] ) ?>">
+                        <p class="description"><?php _e( 'Optional. Use an approved SendLime sender, brand name, phone number, or brand ID. Leave blank to use the default sender.', 'sendlime' ); ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -66,14 +67,7 @@
                     </th>
                     <td>
                         <input type="text" name="api_key" id="api_key" class="regular-text" value="<?php echo esc_attr( $settings['api_key'] ) ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="api_secret"><?php _e( 'API Secret', 'sendlime' ); ?></label>
-                    </th>
-                    <td>
-                        <input type="password" name="api_secret" id="api_secret" class="regular-text" value="<?php echo esc_attr( $settings['api_secret'] ) ?>">
+                        <p class="description"><?php _e( 'Use your SendLime API key starting with sl_live_.', 'sendlime' ); ?></p>
                     </td>
                 </tr>
 
@@ -130,7 +124,7 @@
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="apiSecret"><?php _e( 'Select status', 'sendlime' ); ?></label>
+                        <label for="status"><?php _e( 'Select status', 'sendlime' ); ?></label>
                     </th>
                     <td>
                         <?php $notification_controller->wc_statuses(); ?>

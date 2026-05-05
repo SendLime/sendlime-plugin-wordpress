@@ -4,7 +4,7 @@ Tags: woocommerce, sms, order notify, update
 Requires at least: 3.5
 Tested up to: 5.9
 Requires PHP: 7.1
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,7 @@ SendLime lets you notify your customers about their WooCommerce order updates vi
 
 = Main features =
 * Automatically send SMS upon order status change
+* Supports current SendLime API v2 Bearer API keys
 * Custom message for every order status
 * Custom message for custom order status
 
@@ -43,7 +44,18 @@ In the search field type "SendLime" and click Search Plugins. You can install it
 2. Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your WordPress installation's wp-content/plugins/ directory.
 3. Activate the plugin from the Plugins menu within the WordPress admin.
 
+= SendLime setup =
+1. Create a SendLime API key from your dashboard.
+2. Open WooCommerce > SendLime Notifications.
+3. Paste your API key.
+4. Optionally set an approved sender / brand ID.
+5. Customize your SMS messages and save the settings.
+
 == Changelog ==
+
+= 1.2.0 =
+* Update: Use current SendLime API v2 endpoint and Bearer API keys
+* Remove: API Secret is no longer required
 
 = 1.1.2 =
 * Fix: API issue

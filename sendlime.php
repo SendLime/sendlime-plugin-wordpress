@@ -5,7 +5,7 @@
  * Plugin URI: https://wordpress.org/plugins/sendlime
  * Author: SendLime
  * Author URI: https://www.sendlime.com
- * Version: 1.1.2
+ * Version: 1.2.0
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: sendlime
@@ -29,7 +29,7 @@ final class SendLime {
      *
      * @var string
      */
-    const version = '1.0';
+    const version = '1.2.0';
 
     /**
      * Class constructor

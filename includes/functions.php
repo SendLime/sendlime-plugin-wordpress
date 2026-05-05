@@ -5,15 +5,24 @@ function sendlime_wc_update_order_notification_settings( $args = [] ) {
 }
 
 function sendlime_send_sms( $args = [] ) {
-	return wp_remote_post("https://brain.sendlime.com/sms", array(
+	$body = array(
+		'to'      => $args['to'],
+		'message' => $args['text'],
+		'channel' => 'sms',
+	);
+
+	if ( ! empty( $args['from'] ) ) {
+		$body['brand_id'] = $args['from'];
+	}
+
+	return wp_remote_post("https://api.sendlime.com/api/v2/messages", array(
 		'method'      => 'POST',
-		'body'        => array(
-			'to'            => $args['to'],
-			'text'          => $args['text'],
-			'from'          => $args['from'],
-		),
+		'timeout'     => 20,
+		'body'        => wp_json_encode( $body ),
 		'headers'			=> array(
-			'Authorization' => 'Basic ' . base64_encode( $args['api_key'] . ':' . $args['api_secret'] ),
+			'Authorization' => 'Bearer ' . $args['api_key'],
+			'Content-Type'  => 'application/json',
+			'Accept'        => 'application/json',
 		),
 	));
 }
